@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:sugar",
+    "minecraft:amethyst_shard",
+    "minecraft:rabbit_foot"
+  ],
+  "result": {
+    "id": "pocketutils:speed_gem",
+    "count": 1
+  }
+}
