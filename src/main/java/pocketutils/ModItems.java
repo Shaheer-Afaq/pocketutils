@@ -8,37 +8,36 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import java.util.function.Function;
 
 public class ModItems {
 
-    public static final Item SPEED_GEM = register(
-            "speed_gem", props -> new GemItem(props, MobEffects.SPEED, ""), new Item.Properties().stacksTo(1));
-
-    public static final Item STRENGTH_GEM = register(
-            "strength_gem",props -> new GemItem(props, MobEffects.STRENGTH, ""), new Item.Properties().stacksTo(1));
-
-     public static final Item FIRE_GEM = register(
-            "fire_gem",props -> new GemItem(props, MobEffects.FIRE_RESISTANCE, ""), new Item.Properties().stacksTo(1));
+     public static final Item HEALTH_GEM = register(
+            "health_gem",props -> new GemItem(props, MobEffects.HEALTH_BOOST, 2, ""), new Item.Properties().stacksTo(1).fireResistant());
 
      public static final Item HASTE_GEM = register(
-            "haste_gem",props -> new GemItem(props, MobEffects.HASTE, ""), new Item.Properties().stacksTo(1));
+            "haste_gem",props -> new GemItem(props, MobEffects.HASTE,0, ""), new Item.Properties().stacksTo(1).fireResistant());
 
     public static final Item GRAVITY_GEM = register(
-            "gravity_gem",props -> new GemItem(props, null, "gravity"), new Item.Properties().stacksTo(1));
+            "gravity_gem",props -> new GemItem(props, null,0, "gravity"), new Item.Properties().stacksTo(1).fireResistant());
+
+    public static final Item LIGHTNING_GEM = register(
+            "lightning_gem",props -> new GemItem(props, null,0, "lightning"), new Item.Properties().stacksTo(1).fireResistant());
 
     static final Item GEM_FRAGMENT = register(
-            "gem_fragment", props -> new GemItem(props, null, "gravity"), new Item.Properties().stacksTo(1));
+            "gem_fragment", Item::new, new Item.Properties().stacksTo(1));
 
     public static void initialize() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
                 .register(itemGroup -> {
-                    itemGroup.accept(ModItems.SPEED_GEM);
+                    itemGroup.accept(ModItems.HEALTH_GEM);
+                    itemGroup.accept(ModItems.HASTE_GEM);
                     itemGroup.accept(ModItems.GRAVITY_GEM);
-//                    itemGroup.accept(ModItems.HASTE_GEM);
-//                    itemGroup.accept(ModItems.STRENGTH_GEM);
+                    itemGroup.accept(ModItems.LIGHTNING_GEM);
+                    itemGroup.accept(ModItems.GEM_FRAGMENT);
                 });
 
     }
@@ -48,5 +47,4 @@ public class ModItems {
         Registry.register(BuiltInRegistries.ITEM, itemKey, item);
         return item;
     }
-
 }
