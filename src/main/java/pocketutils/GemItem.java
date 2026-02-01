@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Console;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 public class GemItem extends Item {
@@ -32,6 +33,7 @@ public class GemItem extends Item {
     private final Holder<MobEffect>  effect;
     private final int amplifier;
     private static final Map<UUID, Map<String, Long>> COOLDOWNS = new HashMap<>();
+    private static final Map<UUID, Integer> fireRingTick = new HashMap<>();
     final String custom_effect;
 
     static {
@@ -71,7 +73,7 @@ public class GemItem extends Item {
                 final Random RANDOM = new Random();
 
                 if (entity.level() instanceof ServerLevel world){
-                    if (RANDOM.nextInt(100) < 20 && isGemActive(attacker, "lightning")) {
+                    if (RANDOM.nextInt(100) < 40 && isGemActive(attacker, "spell")) {
                         LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(world, EntitySpawnReason.TRIGGERED);
                         if (lightning != null) {
                             lightning.setPos(entity.getX(), entity.getY(), entity.getZ());
@@ -90,7 +92,6 @@ public class GemItem extends Item {
         });
     }
 
-
     public GemItem(Properties settings, Holder<MobEffect> effect, int amplifier, String effect_id) {
         super(settings);
         this.effect = effect;
@@ -107,26 +108,26 @@ public class GemItem extends Item {
             if (effect != null) {
                 player.addEffect(new MobEffectInstance(effect, 10, amplifier, false, true));
             }
-        }
-        if (player.isShiftKeyDown() && isGemActive(player, custom_effect)) {
-//            long cooldown = 20 * 15;
 
-            if (!player.getCooldowns().isOnCooldown(stack)) {
-                player.getCooldowns().addCooldown(stack, 100);
-//                setCooldown(player, "fire");
-                List<LivingEntity> nearbyList = world.getEntitiesOfClass(
-                        LivingEntity.class,
-                        player.getBoundingBox().inflate(3.0, 0.0, 3.0)
-
-                );
-                world.playSound(null,  entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS,1.0F,1.0F);
-                world.playSound(null,  entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_DEATH, SoundSource.PLAYERS,1.0F,1.0F);
-                for (LivingEntity e : nearbyList) {
-                    if (e!=player){
-                        e.setRemainingFireTicks(160);
-                        player.getCooldowns().addCooldown(stack, 1);
+            if (player.isShiftKeyDown() && custom_effect.equals("fire")) {
+                if (!player.getCooldowns().isOnCooldown(stack)) {
+                    player.getCooldowns().addCooldown(stack, 100);
+                    spawnFireRing(world, player, 3.0, 6, 30);
+                    List<LivingEntity> nearbyList = world.getEntitiesOfClass(
+                            LivingEntity.class,
+                            player.getBoundingBox().inflate(3.0, 0.0, 3.0)
+                    );
+                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_DEATH, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    for (LivingEntity e : nearbyList) {
+                        if (e != player) {
+                            e.setRemainingFireTicks(160);
+                        }
                     }
                 }
+            }
+            if (player.isUsingItem() && custom_effect.equals("spell")) {
+                System.out.println("pressed");
             }
         }
     }
@@ -138,18 +139,31 @@ public class GemItem extends Item {
         return stack.getItem() instanceof GemItem gem && effectId.equals(gem.custom_effect);
     }
 
-    private static boolean isOnCooldown(Player player, String gemId, long cooldown) {
-        long time = player.level().getGameTime();
+    public static void spawnFireRing(ServerLevel world, Player player, double maxRadius, int steps, int points) {
+        Random rand = new Random();
 
-        Map<String, Long> playerCooldowns = COOLDOWNS.computeIfAbsent(player.getUUID(), id -> new HashMap<>());
+        double centerX = player.getX();
+        double centerY = player.getY() + 0.5;
+        double centerZ = player.getZ();
 
-        long lastUse = playerCooldowns.getOrDefault(gemId, 0L);
+        for (int t = 1; t <= steps; t++) {
+            double radius = maxRadius * t / steps;
 
-        return time - lastUse < cooldown;
+            for (int i = 0; i < points; i++) {
+                double angle = 2 * Math.PI * i / points;
+
+                double x = centerX + radius * Math.cos(angle) + ((rand.nextDouble() - 0.5) * 0.7);
+                double z = centerZ + radius * Math.sin(angle) + ((rand.nextDouble() - 0.5) * 0.7);
+                double y = centerY + (rand.nextDouble() - 0.5) * 0.2;
+
+                world.sendParticles(ParticleTypes.FLAME, x, y, z, 1, 0, 0, 0, 0.0);
+                world.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 1, 0, 0, 0, 0.0);
+                world.sendParticles(ParticleTypes.SMOKE, x, y, z, 1, 0, 0, 0, 0.0);
+                world.sendParticles(ParticleTypes.LAVA, x, y, z, 1, 0, 0, 0, 0.0);
+                world.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 1, 0, 0, 0, 0.0);
+            }
+        }
     }
-    private static void setCooldown(Player player, String gemId) {
-        long time = player.level().getGameTime();
-        COOLDOWNS.computeIfAbsent(player.getUUID(), id -> new HashMap<>()).put(gemId, time);
-    }
+
 
 }

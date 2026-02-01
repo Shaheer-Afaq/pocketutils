@@ -6,9 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import java.util.function.Function;
@@ -24,11 +22,11 @@ public class ModItems {
     public static final Item GRAVITY_GEM = register(
             "gravity_gem",props -> new GemItem(props, null,0, "gravity"), new Item.Properties().stacksTo(1).fireResistant());
 
-    public static final Item LIGHTNING_GEM = register(
-            "lightning_gem",props -> new GemItem(props, null,0, "lightning"), new Item.Properties().stacksTo(1).fireResistant());
+    public static final Item SPELL_GEM = register(
+            "spell_gem",props -> new GemItem(props, null,0, "spell"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(40));
 
     public static final Item FIRE_GEM = register(
-            "fire_gem",props -> new GemItem(props, MobEffects.FIRE_RESISTANCE,0, "fire"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(100));
+            "fire_gem",props -> new GemItem(props, MobEffects.FIRE_RESISTANCE,0, "fire"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(160));
 
     static final Item GEM_FRAGMENT = register(
             "gem_fragment", Item::new, new Item.Properties().stacksTo(1));
@@ -39,7 +37,7 @@ public class ModItems {
                     itemGroup.accept(ModItems.HEALTH_GEM);
                     itemGroup.accept(ModItems.HASTE_GEM);
                     itemGroup.accept(ModItems.GRAVITY_GEM);
-                    itemGroup.accept(ModItems.LIGHTNING_GEM);
+                    itemGroup.accept(ModItems.SPELL_GEM);
                     itemGroup.accept(ModItems.FIRE_GEM);
                     itemGroup.accept(ModItems.GEM_FRAGMENT);
                 });
