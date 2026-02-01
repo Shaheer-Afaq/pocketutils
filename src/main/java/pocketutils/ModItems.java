@@ -16,16 +16,19 @@ import java.util.function.Function;
 public class ModItems {
 
      public static final Item HEALTH_GEM = register(
-            "health_gem",props -> new GemItem(props, MobEffects.HEALTH_BOOST, 2, ""), new Item.Properties().stacksTo(1).fireResistant());
+            "health_gem",props -> new GemItem(props, MobEffects.HEALTH_BOOST, 2, "health"), new Item.Properties().stacksTo(1).fireResistant());
 
      public static final Item HASTE_GEM = register(
-            "haste_gem",props -> new GemItem(props, MobEffects.HASTE,0, ""), new Item.Properties().stacksTo(1).fireResistant());
+            "mining_gem",props -> new GemItem(props, MobEffects.HASTE,1, "mining"), new Item.Properties().stacksTo(1).fireResistant());
 
     public static final Item GRAVITY_GEM = register(
             "gravity_gem",props -> new GemItem(props, null,0, "gravity"), new Item.Properties().stacksTo(1).fireResistant());
 
     public static final Item LIGHTNING_GEM = register(
             "lightning_gem",props -> new GemItem(props, null,0, "lightning"), new Item.Properties().stacksTo(1).fireResistant());
+
+    public static final Item FIRE_GEM = register(
+            "fire_gem",props -> new GemItem(props, MobEffects.FIRE_RESISTANCE,0, "fire"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(100));
 
     static final Item GEM_FRAGMENT = register(
             "gem_fragment", Item::new, new Item.Properties().stacksTo(1));
@@ -37,6 +40,7 @@ public class ModItems {
                     itemGroup.accept(ModItems.HASTE_GEM);
                     itemGroup.accept(ModItems.GRAVITY_GEM);
                     itemGroup.accept(ModItems.LIGHTNING_GEM);
+                    itemGroup.accept(ModItems.FIRE_GEM);
                     itemGroup.accept(ModItems.GEM_FRAGMENT);
                 });
 

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "pocketutils:item/mining_gem"
+  }
+}

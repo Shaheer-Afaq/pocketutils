@@ -1,4 +1,8 @@
 {
-  "item.pocketutils.speed_gem": "Speed Gem",
-  "item.pocketutils.gravity_gem": "Gravity Gem"
+  "item.pocketutils.health_gem": "Health Gem",
+  "item.pocketutils.mining_gem": "Mining Gem",
+  "item.pocketutils.gravity_gem": "Gravity Gem",
+  "item.pocketutils.lightning_gem": "Lightning Gem",
+  "item.pocketutils.fire_gem": "Fire Gem",
+  "item.pocketutils.gem": "Gem"
 }
