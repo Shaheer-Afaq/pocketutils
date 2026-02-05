@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class ModItems {
 
      public static final Item HEALTH_GEM = register(
-            "health_gem",props -> new GemItem(props, MobEffects.HEALTH_BOOST, 2, "health"), new Item.Properties().stacksTo(1).fireResistant());
+            "health_gem",props -> new GemItem(props, MobEffects.HEALTH_BOOST, 1, "health"), new Item.Properties().stacksTo(1).fireResistant());
 
      public static final Item HASTE_GEM = register(
             "mining_gem",props -> new GemItem(props, MobEffects.HASTE,1, "mining"), new Item.Properties().stacksTo(1).fireResistant());
@@ -22,14 +22,11 @@ public class ModItems {
     public static final Item GRAVITY_GEM = register(
             "gravity_gem",props -> new GemItem(props, null,0, "gravity"), new Item.Properties().stacksTo(1).fireResistant());
 
-    public static final Item SPELL_GEM = register(
-            "spell_gem",props -> new GemItem(props, null,0, "spell"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(40));
+    public static final Item MAGIC_GEM = register(
+            "magic_gem",props -> new GemItem(props, null,0, "magic"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(100));
 
     public static final Item FIRE_GEM = register(
             "fire_gem",props -> new GemItem(props, MobEffects.FIRE_RESISTANCE,0, "fire"), new Item.Properties().stacksTo(1).fireResistant().useCooldown(160));
-
-    static final Item GEM_FRAGMENT = register(
-            "gem_fragment", Item::new, new Item.Properties().stacksTo(1));
 
     public static void initialize() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
@@ -37,9 +34,8 @@ public class ModItems {
                     itemGroup.accept(ModItems.HEALTH_GEM);
                     itemGroup.accept(ModItems.HASTE_GEM);
                     itemGroup.accept(ModItems.GRAVITY_GEM);
-                    itemGroup.accept(ModItems.SPELL_GEM);
+                    itemGroup.accept(ModItems.MAGIC_GEM);
                     itemGroup.accept(ModItems.FIRE_GEM);
-                    itemGroup.accept(ModItems.GEM_FRAGMENT);
                 });
 
     }

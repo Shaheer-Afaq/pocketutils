@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "pocketutils:item/spell_gem"
+    "layer0": "pocketutils:item/fire_gem"
   }
 }

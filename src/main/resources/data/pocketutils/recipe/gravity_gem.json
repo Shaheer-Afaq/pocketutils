@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "A",
+    "F"
+  ],
+  "key": {
+    "#": "minecraft:heavy_core",
+    "A": "minecraft:amethyst_shard",
+    "F": "minecraft:feather"
+  },
+  "result": {
+    "id": "pocketutils:gravity_gem",
+    "count": 1
+  }
+}

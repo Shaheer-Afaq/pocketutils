@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " / ",
+    "FAF",
+    " M "
+  ],
+  "key": {
+    "/": "minecraft:blaze_rod",
+    "F": "minecraft:fire_charge",
+    "A": "minecraft:amethyst_shard",
+    "M": "minecraft:magma_cream"
+  },
+  "result": {
+    "id": "pocketutils:fire_gem",
+    "count": 1
+  }
+}
